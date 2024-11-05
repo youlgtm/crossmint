@@ -8,6 +8,14 @@
 - Double retry logic for extra safety
 - Map validation
 - Map mismatch detection (current map vs goal map)
+- Map caching
+
+## Instructions
+
+- In main.py call the action function with the url, candidateId and either "clean" to delete the MegaVerse or "build" to build the MegaVerse.
+- You can further change the parameters in the QueueProcessor the middle integer parameter defines the number of concurrent workers.
+- You can also change the parameters in the Requests, the last two integers represent max_retries and delay_time respectively.
+  (Changing the parameters is not necessary, current parameters work well, the only required parameter is clean and delete)
 
 The project is broken down into three main components
 
