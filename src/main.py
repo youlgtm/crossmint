@@ -32,7 +32,7 @@ async def action(candidate_id, url, action_type):
     # QueueProcessor takes in a Requests Object, a concurrency, and a operation "POST" or "DELETE"
     # This is done to configure how many workers you want to concurrently POST or DELETE planets.
     # The current API has a very low rate limit so it is advisable to use max 2 workers. 
-    queue_processor = QueueProcessor(request_instance, 5, queue_operation_type)
+    queue_processor = QueueProcessor(request_instance, 2, queue_operation_type)
     # We create a second QueueProcessor to use it as a last resort once we fail to validate our current_map with the goal_map
     # We set it to 1 worker, to reduce the chances of silently failing to POST a planet
     retry_queue_processor = QueueProcessor(request_instance, 1, queue_operation_type)
@@ -55,7 +55,6 @@ async def action(candidate_id, url, action_type):
         logger.info(f'The SHA-1 hash of current_map does not match the hash of goal_map')
         logger.info(f'Retrying with one worker')
         payload = map_processor.get_request_payload("retry")
-        print(payload)
         await retry_queue_processor.add_to_queue(payload)
         res, data = await retry_queue_processor.process_queue()
         logger.info(f'After Retry, we processed {res} requests')
